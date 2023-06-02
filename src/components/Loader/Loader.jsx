@@ -21,14 +21,14 @@ export const Loader = () => {
 export const CircleLoader = () => {
   return (
     <Oval
-      height={40}
-      width={40}
-      color="#EBD8FF"
+      height={30}
+      width={30}
+      color="#33CC99"
       wrapperStyle={{}}
       wrapperClass=""
       visible={true}
       ariaLabel="oval-loading"
-      secondaryColor="#EBD8FF"
+      secondaryColor="#33CC99"
       strokeWidth={2}
       strokeWidthSecondary={2}
     />

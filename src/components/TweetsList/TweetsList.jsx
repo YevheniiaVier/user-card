@@ -2,15 +2,11 @@ import PropTypes from "prop-types";
 import Tweet from "../Tweet/Tweet";
 import { List } from "./TweetsList.styled";
 
-const TweetsList = ({ cards }) => {
+const TweetsList = ({ cards, onFollowersCountUpdate }) => {
   return (
     <List id="gallery">
-      
       {cards.map((card) => (
-        <Tweet
-        card={card}
-          key={card.id}
-        />
+        <Tweet onUpdate={onFollowersCountUpdate} card={card} key={card.id} />
       ))}
     </List>
   );

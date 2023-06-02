@@ -2,11 +2,12 @@ import styled from "styled-components";
 
 export const StyledButton = styled.button`
   display: flex;
+  gap: 5px;
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 14px 28px;
-  width: ${(props) => (props.text === "load more" ? "400px" : "196px")};
+  /* padding: 14px 28px; */
+  width: 196px;
  
   height: 50px;
   border-radius: 10.31px;

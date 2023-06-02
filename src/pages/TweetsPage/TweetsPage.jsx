@@ -1,21 +1,24 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getTotalCount, getUsers } from "../../services/tweets-api";
 import { useSearchParams } from "react-router-dom";
+import { CgMoreO } from "react-icons/cg";
 
 // import { useParams } from 'react-router-dom';
 import { Loader } from "../../components/Loader/Loader";
 
 import { TweetsBox } from "./TweetsPage.styled";
+import { updateUser, getUser } from "../../services/tweets-api";
 
 import TweetsList from "../../components/TweetsList/TweetsList";
 import Button from "../../components/Button/Button";
-import { CircleLoader } from '../../components/Loader/Loader';
+import { CircleLoader } from "../../components/Loader/Loader";
 
 const TweetsPage = () => {
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
+  const [isUpdated, setIsUpdated] = useState(false);
 
   const [showButton, setShowButton] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -23,6 +26,11 @@ const TweetsPage = () => {
   const [emptyResults, setEmptyResults] = useState("");
 
   const limit = searchParams.get("limit") || 3;
+
+  useEffect(() => {
+    setCards([]);
+  }, []);
+
   useEffect(() => {
     const fetchTweets = async () => {
       try {
@@ -54,25 +62,50 @@ const TweetsPage = () => {
     fetchTweets();
   }, [limit, page]);
 
+  const handleUpdate = async (updatedCard) => {
+    console.log("aaaaaa", updatedCard);
+    try {
+      const updatedCards = await Promise.all(
+        cards.map(async (card) => {
+          if (card.id === updatedCard.id) {
+            return updatedCard;
+          }
+          return card;
+        })
+      );
+      setCards(updatedCards);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
   // useEffect(() => {
   //   if (cards.length > 3 && page !== 1) {
   //     onSmoothScroll();
   //   }
   // }, [cards, page]);
 
-  const loadMore = () => {
+  const loadMore = useCallback(() => {
     setPage((prevState) => prevState + 1);
-  };
+  }, []);
 
   return (
     <TweetsBox>
       {isLoading && <Loader />}
       {error && <p>...error</p>}
-      {cards.length > 0 && <TweetsList cards={cards} />}
+      {cards.length > 0 && (
+        <TweetsList onFollowersCountUpdate={handleUpdate} cards={cards} />
+      )}
       {/* {!error && !loading && cards.length === 0 && <p> "no more results"</p>} */}
       {showButton && (
-        <Button width='320px' disabled={isLoading} type="button" text="load more" onClick={loadMore}>
-          {isLoading && <CircleLoader/>}
+        <Button
+          disabled={isLoading}
+          type="button"
+          text="load more"
+          onClick={loadMore}
+        >
+          {!isLoading && <CgMoreO size={30} />}
+          {isLoading && <CircleLoader />}
         </Button>
       )}
       {!showButton && emptyResults && <p>{emptyResults}</p>}

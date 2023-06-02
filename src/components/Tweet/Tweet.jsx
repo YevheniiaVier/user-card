@@ -14,39 +14,48 @@ import {
 } from "./Tweet.styled";
 import defaultUser from "../../images/defaultUser.png";
 import Button from "../Button/Button";
-import { updateUser } from "../../services/tweets-api";
+import { getUser, updateUser } from "../../services/tweets-api";
 
-const Tweet = ({ card }) => {
+const Tweet = ({ card, onUpdate }) => {
   const { id, user, tweets, avatar, followers } = card;
 
-  const [isFollowed, setIsFollowed] = useState(false);
-  const [userCard, setUserCard] = useState(card);
+  const [isFollowed, setIsFollowed] = useState(() => JSON.parse(window.localStorage.getItem(`followed_${id}`)) ?? false);
+  const [followersCount, setFollowersCount] = useState(card.followers);
   const [error, setError] = useState(null);
 
   const formattedTweets = tweets.toLocaleString("en-US");
   const formattedFollowers = followers.toLocaleString("en-US");
 
-//   useEffect(() => {
-//     const updateUserCard = async () => {
-//       try {
-//         await updateUser(userCard);
-//       } catch (error) {
-//         setError(error.message);
-//       }
-//     };
-
-//     updateUserCard();
-//   }, []);
-
+  // useEffect(() => {
+  //   window.localStorage.setItem('contacts', JSON.stringify(contacts));
+  // }, [card]);
+  
   const toggleFollowed = async () => {
     setIsFollowed((prevState) => !prevState);
-    setUserCard((prevState) => ({
-      ...prevState,
-      followers: isFollowed
-        ? (prevState.followers - 1)
-        : (prevState.followers + 1),
-    }));
+    const updatedFollowersCount = isFollowed ? followersCount - 1 : followersCount + 1;
+    setFollowersCount(updatedFollowersCount);
+    await updateCard(updatedFollowersCount);
+    const updatedCard = await getUser(id)
+    onUpdate(updatedCard);
+    if (isFollowed) {
+      localStorage.removeItem(`followed_${id}`);
+    } else {
+      localStorage.setItem(`followed_${id}`, true);
+    }
+  };
 
+
+
+
+  const updateCard = async (updatedFollowersCount) => {
+    try {
+      await updateUser({
+        ...card,
+        followers: updatedFollowersCount,
+      });
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   return (

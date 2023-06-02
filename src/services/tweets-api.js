@@ -6,15 +6,22 @@ const instance = axios.create({
 
 export const getTotalCount = async () => {
   try {
- 
     const { data } = await instance.get(`/`);
-
     return data.length;
   } catch (error) {
     console.error("Error while fetching users:", error);
     throw error;
   }
+};
 
+export const getUser = async (id) => {
+  try {
+    const { data } = await instance.get(`/${id}`);
+    return data;
+  } catch (error) {
+    console.error("Error while fetching users:", error);
+    throw error;
+  }
 };
 
 export const getUsers = async (page = 1, limit = 3) => {
@@ -28,7 +35,6 @@ export const getUsers = async (page = 1, limit = 3) => {
     console.error("Error while fetching users:", error);
     throw error;
   }
-
 };
 
 export const updateUser = async (card) => {
