@@ -1,11 +1,11 @@
-import { Box, Title } from './HomePage.styled';
+import {Title } from './HomePage.styled';
 
 const HomePage = () => {
   return (
-    <Box>
+    // <Box>
       <Title>Home page</Title>
  
-    </Box>
+    // </Box>
   );
 };
 

@@ -1,4 +1,4 @@
-import { ThreeDots } from "react-loader-spinner";
+import { ThreeDots, Oval } from "react-loader-spinner";
 import { Box } from "./Loader.styled";
 
 export const Loader = () => {
@@ -15,5 +15,22 @@ export const Loader = () => {
         visible={true}
       />
     </Box>
+  );
+};
+
+export const CircleLoader = () => {
+  return (
+    <Oval
+      height={40}
+      width={40}
+      color="#EBD8FF"
+      wrapperStyle={{}}
+      wrapperClass=""
+      visible={true}
+      ariaLabel="oval-loading"
+      secondaryColor="#EBD8FF"
+      strokeWidth={2}
+      strokeWidthSecondary={2}
+    />
   );
 };

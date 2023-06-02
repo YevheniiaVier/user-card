@@ -1,65 +1,92 @@
-import { useState, useEffect } from 'react';
-import { getUsers } from '../../services/tweets-api';
+import { useState, useEffect } from "react";
+import { getTotalCount, getUsers } from "../../services/tweets-api";
+import { useSearchParams } from "react-router-dom";
 
 // import { useParams } from 'react-router-dom';
-import { Loader } from '../../components/Loader/Loader';
+import { Loader } from "../../components/Loader/Loader";
 
+import { TweetsBox } from "./TweetsPage.styled";
 
-import {
-  TweeetsList,
-  TweeetsBox,
-  // TweeetsInfo,
-  // TweeetsItem,
-} from './TweetsPage.styled';
-
-
+import TweetsList from "../../components/TweetsList/TweetsList";
+import Button from "../../components/Button/Button";
+import { CircleLoader } from '../../components/Loader/Loader';
 
 const TweetsPage = () => {
-  const [tweets, setTweets] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [cards, setCards] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);
 
+  const [showButton, setShowButton] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  // const page = Number(searchParams.get("page")) || 1;
+  const [emptyResults, setEmptyResults] = useState("");
 
-
+  const limit = searchParams.get("limit") || 3;
   useEffect(() => {
     const fetchTweets = async () => {
       try {
-        setLoading(true);
-        const result = await getUsers();
+        // setShowButton(false);
+        setIsLoading(true);
+        const data = await getTotalCount();
+        const totalPages = Math.ceil(data / limit);
 
-setTweets(result);
+        const result = await getUsers(page);
 
+        setCards((prevState) => [...prevState, ...result]);
+
+        setShowButton(true);
+
+        if (result.length <= 3 && page === totalPages) {
+          setShowButton(false);
+          setEmptyResults(
+            `We're sorry, but you've reached the end of  results.`
+          );
+        } else {
+          setShowButton(true);
+        }
       } catch (error) {
         setError(error.message);
-      } 
-      finally {
-        setLoading(false);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchTweets();
-  }, []);
+  }, [limit, page]);
 
-  const elements = tweets.map(({ id, user }) => (
-    <li key={id}>
-      {/* Author:&nbsp;&nbsp; */}
-      {user}
-  
-    </li>
-  ));
-  // const elements = tweets[0]?.tweets;
+  // useEffect(() => {
+  //   if (cards.length > 3 && page !== 1) {
+  //     onSmoothScroll();
+  //   }
+  // }, [cards, page]);
+
+  const loadMore = () => {
+    setPage((prevState) => prevState + 1);
+  };
 
   return (
-    <TweeetsBox>
-      <p>{elements}</p>
-      {loading && <Loader />}
+    <TweetsBox>
+      {isLoading && <Loader />}
       {error && <p>...error</p>}
-      {tweets.length > 0 && <TweeetsList>{elements}</TweeetsList>}
-        {!error && !loading && tweets.length === 0 && ( 
-        <p> "No tweets available yet"</p>
+      {cards.length > 0 && <TweetsList cards={cards} />}
+      {/* {!error && !loading && cards.length === 0 && <p> "no more results"</p>} */}
+      {showButton && (
+        <Button width='320px' disabled={isLoading} type="button" text="load more" onClick={loadMore}>
+          {isLoading && <CircleLoader/>}
+        </Button>
       )}
-
-    </TweeetsBox>
+      {!showButton && emptyResults && <p>{emptyResults}</p>}
+    </TweetsBox>
   );
 };
 
+// function onSmoothScroll() {
+//   const { height: cardHeight } = document
+//     .querySelector("#gallery")
+//     .firstElementChild.getBoundingClientRect();
+//   window.scrollBy({
+//     top: cardHeight * 1,
+//     behavior: "smooth",
+//   });
+// }
 export default TweetsPage;
