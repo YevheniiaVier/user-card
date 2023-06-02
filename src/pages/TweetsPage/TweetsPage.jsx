@@ -2,16 +2,17 @@ import { useState, useEffect, useCallback } from "react";
 import { getTotalCount, getUsers } from "../../services/tweets-api";
 import { useSearchParams } from "react-router-dom";
 import { CgMoreO } from "react-icons/cg";
+import { useParams, useNavigate, Outlet, useLocation } from "react-router-dom";
 
 // import { useParams } from 'react-router-dom';
 import { Loader } from "../../components/Loader/Loader";
 
-import { TweetsBox } from "./TweetsPage.styled";
-import { updateUser, getUser } from "../../services/tweets-api";
+import { GoBackBtn, TweetsBox } from "./TweetsPage.styled";
 
 import TweetsList from "../../components/TweetsList/TweetsList";
 import Button from "../../components/Button/Button";
 import { CircleLoader } from "../../components/Loader/Loader";
+import { TfiControlBackward } from "react-icons/tfi";
 
 const TweetsPage = () => {
   const [cards, setCards] = useState([]);
@@ -24,6 +25,10 @@ const TweetsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   // const page = Number(searchParams.get("page")) || 1;
   const [emptyResults, setEmptyResults] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from || "/";
+  const goBack = () => navigate(from);
 
   const limit = searchParams.get("limit") || 3;
 
@@ -79,11 +84,11 @@ const TweetsPage = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (cards.length > 3 && page !== 1) {
-  //     onSmoothScroll();
-  //   }
-  // }, [cards, page]);
+  useEffect(() => {
+    if (cards.length > 3 && page !== 1) {
+      onSmoothScroll();
+    }
+  }, [cards, page]);
 
   const loadMore = useCallback(() => {
     setPage((prevState) => prevState + 1);
@@ -91,6 +96,9 @@ const TweetsPage = () => {
 
   return (
     <TweetsBox>
+      <GoBackBtn type="button" onClick={goBack}>
+        <TfiControlBackward /> Go back
+      </GoBackBtn>
       {isLoading && <Loader />}
       {error && <p>...error</p>}
       {cards.length > 0 && (
@@ -113,13 +121,13 @@ const TweetsPage = () => {
   );
 };
 
-// function onSmoothScroll() {
-//   const { height: cardHeight } = document
-//     .querySelector("#gallery")
-//     .firstElementChild.getBoundingClientRect();
-//   window.scrollBy({
-//     top: cardHeight * 1,
-//     behavior: "smooth",
-//   });
-// }
+function onSmoothScroll() {
+  const { height: cardHeight } = document
+    .querySelector("#gallery")
+    .firstElementChild.getBoundingClientRect();
+  window.scrollBy({
+    top: cardHeight * 1,
+    behavior: "smooth",
+  });
+}
 export default TweetsPage;
