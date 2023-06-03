@@ -22,12 +22,11 @@ const TweetsPage = () => {
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [selectedOption, setSelectedOption] = useState(OPTIONS.SHOW_ALL);
-  const [totalCards, setTotalCards] = useState(0);
 
   const [showButton, setShowButton] = useState(false);
   const [searchParams] = useSearchParams();
   const [emptyResults, setEmptyResults] = useState("");
-  const followedCards = getFollowedCards();
+ 
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -36,42 +35,56 @@ const TweetsPage = () => {
 
   const limit = searchParams.get("limit") || 3;
 
-  const handleOptionSelect = useCallback(
-    async (totalUsers) => {
-      let cardsList = [];
-      if (selectedOption === OPTIONS.FOLLOW) {
-        cardsList = totalUsers.filter(
-          (card) => !followedCards.includes(card.id)
-        );
-      } else if (selectedOption === OPTIONS.FOLLOWING) {
-        cardsList = totalUsers.filter((card) =>
-          followedCards.includes(card.id)
-        );
-      } 
-      setCards(cardsList);
-      setShowButton(false);
-      window.scrollTo(0, 0);
-    },
-    [followedCards, selectedOption]
-  );
-  const getAll = async () => {
-    try {
-      const data = await getTotalUsers();
-      setTotalCards(data);
-      return;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const handleOptionSelect = useCallback(
+  //   async (totalUsers) => {
+  //     let cardsList = [];
+  //     if (selectedOption === OPTIONS.FOLLOW) {
+  //       cardsList = totalUsers.filter(
+  //         (card) => !followedCards.includes(card.id)
+  //       );
+  //     } else if (selectedOption === OPTIONS.FOLLOWING) {
+  //       cardsList = totalUsers.filter((card) =>
+  //         followedCards.includes(card.id)
+  //       );
+  //     } 
+  //     setCards(cardsList);
+  //     setShowButton(false);
+  //     window.scrollTo(0, 0);
+  //   },
+  //   [followedCards, selectedOption]
+  // );
+  // // const getAll = async () => {
+  // //   try {
+  // //     const data = await getTotalUsers();
+  // //     setTotalCards(data);
+  // //     return;
+  // //   } catch (error) {
+  // //     console.log(error);
+  // //   }
+  // // };
   useEffect(() => {
     const fetchTweets = async () => {
       try {
         setIsLoading(true);
-        getAll();
-
-        const totalPages = Math.ceil(totalCards.length / limit);
+        // getAll();
+        const data = await getTotalUsers();
+        const totalPages = Math.ceil(data.length / limit);
+ 
         if (selectedOption !== OPTIONS.SHOW_ALL) {
-          handleOptionSelect(totalCards);
+          let cardsList = [];
+          const followedCards = getFollowedCards();
+          if (selectedOption === OPTIONS.FOLLOW) {
+            cardsList = data.filter(
+              (card) => !followedCards.includes(card.id)
+            );
+          } else if (selectedOption === OPTIONS.FOLLOWING) {
+            cardsList = data.filter((card) =>
+              followedCards.includes(card.id)
+            );
+          } 
+          setCards(cardsList);
+          setShowButton(false);
+          window.scrollTo(0, 0);
           setPage(1);
         } else {
           const result = await getUsers(page);
@@ -123,7 +136,7 @@ const TweetsPage = () => {
       <TweetsBox>
         {isLoading && !showButton && <Loader />}
         {error && <p>...error</p>}
-        {cards.length > 0 && <TweetsList cards={cards} />}
+        {!error && cards.length > 0 && <TweetsList cards={cards} />}
         {showButton && (
           <Button
             disabled={isLoading}
