@@ -1,13 +1,11 @@
 import styled from 'styled-components';
-// import { Link } from 'react-router-dom';
 
 export const List = styled.ul`
-display: flex;
-justify-content: center;
-align-items: center;
-gap: 20px;
-flex-wrap: wrap;
-
+ display: grid;
+max-width: calc(1188px);
+grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+grid-gap: 16px;
+margin-top: 0;
 padding: 0;
 list-style: none;
 margin-left: auto;

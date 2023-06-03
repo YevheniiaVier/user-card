@@ -1,15 +1,8 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-import {
-  Header,
-  List,
-  Item,
-  ItemLink,
-  Container,
+import { Header, List, Item, ItemLink, Container } from "./MainNav.styled";
 
-} from './MainNav.styled';
-
-import navItems from './items';
+import navItems from "./items";
 
 export const MainNav = () => {
   const elements = navItems.map(({ id, to, text }) => (
@@ -21,7 +14,7 @@ export const MainNav = () => {
   return (
     <Header>
       <Container>
-      <List>{elements}</List>
+        <List>{elements}</List>
       </Container>
     </Header>
   );

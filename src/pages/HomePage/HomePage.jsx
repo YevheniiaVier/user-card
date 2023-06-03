@@ -1,4 +1,4 @@
-import {Title, Box, WelcomeMessage } from './HomePage.styled';
+import { Box, WelcomeMessage } from './HomePage.styled';
 
 const HomePage = () => {
   return (

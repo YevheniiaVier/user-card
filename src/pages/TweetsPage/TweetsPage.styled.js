@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const TweetsBox = styled.div`
   display: flex;
@@ -6,10 +6,29 @@ export const TweetsBox = styled.div`
   justify-content: center;
   align-items: center;
 `;
+export const Nav = styled.div`
+  position: fixed;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  display: flex;
+  /* flex-direction: column; */
+  gap: 30px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+`;
+
+export const Section = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 
 export const GoBackBtn = styled.button`
-margin-bottom: 20px;
-align-self: flex-start;
+  align-self: flex-start;
   align-items: center;
   width: 120px;
   appearance: none;
@@ -22,11 +41,11 @@ align-self: flex-start;
   border-radius: 20px;
   box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px;
   box-sizing: border-box;
-  color: ${p => p.theme.colors.primary};
+  color: ${(p) => p.theme.colors.primary};
   cursor: pointer;
   display: inline-flex;
   gap: 5px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   height: 40px;
   justify-content: center;
   line-height: 1;
@@ -45,7 +64,7 @@ align-self: flex-start;
   will-change: box-shadow, transform;
   font-size: 18px;
   &:hover {
-    color: ${p => p.theme.colors.white};
+    color: ${(p) => p.theme.colors.white};
     box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,
       rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgb(8, 157, 194) 0 -3px 0 inset;
   }

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import Logo from "../Logo/Logo";
-import logoImg from "../../images/logo.svg";
+import React, { useState, useContext } from "react";
+import PropTypes from "prop-types";
+
 import {
   Avatar,
   Card,
@@ -12,32 +12,25 @@ import {
   BottomSection,
   Divider,
 } from "./Tweet.styled";
-
-import defaultUser from "../../images/defaultUser.png";
 import Button from "../Button/Button";
+
+import logoImg from "../../images/logo.svg";
+import defaultUser from "../../images/defaultUser.png";
+import Logo from "../Logo/Logo";
+
 import { getUser, updateUser } from "../../services/tweets-api";
-import { useContext } from "react";
 import { FollowedContext } from "../../FollowedContext";
 
 const Tweet = ({ card, onUpdate }) => {
   const { id, user, tweets, avatar, followers } = card;
   const { followedCards, setFollowedCards } = useContext(FollowedContext);
 
-  const [isFollowed, setIsFollowed] = useState(
-    () => followedCards.includes(id)
-  );
-
-  // useEffect(() => {
-  //   setIsFollowed(followedCards.includes(id));
-  // }, [followedCards, id]);
-
+  const [isFollowed, setIsFollowed] = useState(followedCards.includes(id));
   const [followersCount, setFollowersCount] = useState(card.followers);
   const [error, setError] = useState(null);
 
-  const formattedTweets = tweets.toLocaleString("en-US");
-  const formattedFollowers = followers.toLocaleString("en-US");
-
-
+  const formattedTweets = new Intl.NumberFormat("en-US").format(tweets);
+  const formattedFollowers = new Intl.NumberFormat("en-US").format(followers);
 
   const toggleFollowed = async () => {
     setIsFollowed((prevState) => !prevState);
@@ -48,14 +41,11 @@ const Tweet = ({ card, onUpdate }) => {
     await updateCard(updatedFollowersCount);
     const updatedCard = await getUser(id);
     onUpdate(updatedCard);
-
     const updatedFollowedCards = isFollowed
-    ? followedCards.filter((cardId) => cardId !== id)
-    : [...followedCards, id];
-  setFollowedCards(updatedFollowedCards);
-  localStorage.setItem("followedCards", JSON.stringify(updatedFollowedCards));
-
-   
+      ? followedCards.filter((cardId) => cardId !== id)
+      : [...followedCards, id];
+    setFollowedCards(updatedFollowedCards);
+    localStorage.setItem("followedCards", JSON.stringify(updatedFollowedCards));
   };
 
   const updateCard = async (updatedFollowersCount) => {
@@ -71,6 +61,7 @@ const Tweet = ({ card, onUpdate }) => {
 
   return (
     <Card>
+      {error && <Info>{error}</Info>}
       <TopSection>
         <BackgroundWrapper />
         <AvatarWrapper>
@@ -93,6 +84,11 @@ const Tweet = ({ card, onUpdate }) => {
       </BottomSection>
     </Card>
   );
+};
+
+Tweet.propTypes = {
+  card: PropTypes.object.isRequired,
+  onUpdate: PropTypes.func.isRequired,
 };
 
 export default Tweet;

@@ -1,15 +1,15 @@
 import { UserRoutes } from "../UserRoutes";
 import { MainNav } from "../components/MainNav/MainNav";
-import { Container } from "./App.styled";
+import { Main } from "./App.styled";
 import { FollowedProvider } from '../FollowedContext'
 
 function App() {
   return (
     <FollowedProvider>
       <MainNav />
-      <Container>
+      <Main>
         <UserRoutes />
-      </Container>
+      </Main>
     </FollowedProvider>
   );
 }

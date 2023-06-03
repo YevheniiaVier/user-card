@@ -56,9 +56,9 @@ export const ItemLink = styled(NavLink)`
   }
 `;
 export const Container = styled.div`
-  /* display: flex; */
-  /* align-items: center; */
-  /* justify-content: space-between; */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding-left: 15px;
   padding-right: 15px;
   max-width: 1200px;
