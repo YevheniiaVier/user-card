@@ -13,7 +13,6 @@ export const Nav = styled.div`
   transform: translateX(-50%);
   z-index: 1;
   display: flex;
-  /* flex-direction: column; */
   gap: 30px;
   justify-content: center;
   align-items: center;

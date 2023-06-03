@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useContext, useRef } from "react";
+import { useState, useEffect, useCallback, useContext } from "react";
 import { getTotalUsers, getUsers } from "../../services/tweets-api";
 import { CgMoreO } from "react-icons/cg";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
@@ -21,7 +21,7 @@ const OPTIONS = {
 
 const TweetsPage = () => {
   const [cards, setCards] = useState([]);
-  const { followedCards, setFollowedCards } = useContext(FollowedContext);
+  const { followedCards } = useContext(FollowedContext);
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -29,7 +29,7 @@ const TweetsPage = () => {
   const [selectedOption, setSelectedOption] = useState(OPTIONS.SHOW_ALL);
 
   const [showButton, setShowButton] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [emptyResults, setEmptyResults] = useState("");
 
   const navigate = useNavigate();
@@ -39,10 +39,9 @@ const TweetsPage = () => {
 
   const limit = searchParams.get("limit") || 3;
 
-
   const handleOptionSelect = useCallback(
     async (totalUsers) => {
-      setCards([]);
+      // setCards([]);
       let cardsList = [];
       if (selectedOption === OPTIONS.FOLLOW) {
         cardsList = totalUsers.filter(
@@ -72,14 +71,12 @@ const TweetsPage = () => {
           handleOptionSelect(data);
           setPage(1);
         } else {
-          
-  
           const result = await getUsers(page);
-          page === 1
-            ? setCards(result)
-            : setCards((prevState) => [...prevState, ...result]);
+          setCards((prevState) =>
+          page === 1 ? result : [...prevState, ...result]
+        );
           setShowButton(true);
-          if (result.length <= 3 && page === totalPages) {
+          if (result.length <= limit && page === totalPages) {
             setShowButton(false);
             setEmptyResults(
               `We're sorry, but you've reached the end of  results.`
@@ -97,30 +94,22 @@ const TweetsPage = () => {
     fetchTweets();
   }, [handleOptionSelect, limit, page, selectedOption]);
 
-  const getOption = (option) => {
+  const getOption = useCallback((option) => {
     setSelectedOption(option);
-  };
-  const handleUpdate = async (updatedCard) => {
-    try {
-      const updatedCards = await Promise.all(
-        cards.map(async (card) => {
-          if (card.id === updatedCard.id) {
-            return updatedCard;
-          }
-          return card;
-        })
-      );
-      setCards(updatedCards);
-    } catch (error) {
-      setError(error.message);
-    }
-  };
+  }, []);
 
-  // useEffect(() => {
-  //   if ( cards.length > 3 && page !== 1) {
-  //     onSmoothScroll();
-  //   }
-  // }, [cards, page]);
+  const handleUpdate = (updatedCard) => {
+    console.log('onUpdate', cards)
+    setCards((prevState) =>
+    prevState.map((card) => (card.id === updatedCard.id ? updatedCard : card))
+    );
+  }
+
+  useEffect(() => {
+    if ( cards.length > 3 && page !== 1) {
+      onSmoothScroll();
+    }
+  }, [cards, page]);
 
   const loadMore = useCallback(() => {
     setPage((prevState) => prevState + 1);
@@ -141,7 +130,6 @@ const TweetsPage = () => {
         {cards.length > 0 && (
           <TweetsList onFollowersCountUpdate={handleUpdate} cards={cards} />
         )}
-        {/* {!error && !loading && cards.length === 0 && <p> "no more results"</p>} */}
         {showButton && (
           <Button
             disabled={isLoading}
@@ -159,13 +147,13 @@ const TweetsPage = () => {
   );
 };
 
-// function onSmoothScroll() {
-//   const { height: cardHeight } = document
-//     .querySelector("#gallery")
-//     .firstElementChild.getBoundingClientRect();
-//   window.scrollBy({
-//     top: cardHeight * 1,
-//     behavior: "smooth",
-//   });
-// }
+function onSmoothScroll() {
+  const { height: cardHeight } = document
+    .querySelector("#gallery")
+    .firstElementChild.getBoundingClientRect();
+  window.scrollBy({
+    top: cardHeight * 1,
+    behavior: "smooth",
+  });
+}
 export default TweetsPage;
