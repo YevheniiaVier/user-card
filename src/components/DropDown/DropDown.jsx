@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
+import { FcFilledFilter } from 'react-icons/fc';
+
 import {
   DropdownButton,
   DropdownContainer,
@@ -51,7 +53,7 @@ export const Dropdown = ({ onOptionSelect }) => {
 
   return (
     <DropdownContainer id="dropdown-container">
-      <DropdownButton onClick={toggleDropdown}>{selectedOption}</DropdownButton>
+      <DropdownButton onClick={toggleDropdown}><FcFilledFilter size={30}/> {selectedOption}</DropdownButton>
       <DropdownContent isOpen={isOpen}>
         {selectedOption !== OPTIONS.SHOW_ALL && (
           <DropdownOption onClick={() => handleOptionSelect("Show All")}>

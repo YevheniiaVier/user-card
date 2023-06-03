@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useContext } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getTotalUsers, getUsers } from "../../services/tweets-api";
 import { CgMoreO } from "react-icons/cg";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
@@ -47,9 +47,7 @@ const TweetsPage = () => {
         cardsList = totalUsers.filter((card) =>
           followedCards.includes(card.id)
         );
-      } else {
-        // setPage(1);
-      }
+      } 
       setCards(cardsList);
       setShowButton(false);
       window.scrollTo(0, 0);
