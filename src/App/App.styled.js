@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
 export const Main = styled.main`
-
-  /* padding: 100px; */
+  padding: 100px;
   margin: 0 auto;
   max-width: 1200px;
   display: flex;

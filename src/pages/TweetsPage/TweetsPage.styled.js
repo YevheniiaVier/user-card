@@ -24,6 +24,7 @@ export const Section = styled.section`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
 `;
 
 export const GoBackBtn = styled.button`
@@ -55,7 +56,7 @@ export const GoBackBtn = styled.button`
   position: relative;
   text-align: left;
   text-decoration: none;
-  transition: box-shadow 0.15s, transform 0.15s;
+  transition: all 300ms 100ms;
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
@@ -67,5 +68,5 @@ export const GoBackBtn = styled.button`
     box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,
       rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgb(8, 157, 194) 0 -3px 0 inset;
   }
-  transition: all 300ms 100ms;
+  
 `;

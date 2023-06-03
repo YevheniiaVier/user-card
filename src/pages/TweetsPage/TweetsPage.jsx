@@ -6,22 +6,17 @@ import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { Loader } from "../../components/Loader/Loader";
 
 import { GoBackBtn, Nav, Section, TweetsBox } from "./TweetsPage.styled";
-import { getFollowedCards } from '../../helpers/getFollowedCards';
+import { getFollowedCards } from "../../helpers/getFollowedCards";
 
 import TweetsList from "../../components/TweetsList/TweetsList";
 import Button from "../../components/Button/Button";
 import { CircleLoader } from "../../components/Loader/Loader";
 import { TfiControlBackward } from "react-icons/tfi";
-import Dropdown from "../../components/DropDown/DropDown";
-const OPTIONS = {
-  SHOW_ALL: "Show All",
-  FOLLOW: "Follow",
-  FOLLOWING: "Following",
-};
+import { Dropdown } from "../../components/DropDown/DropDown";
 
+import { OPTIONS } from "../../components/DropDown/DropDown";
 const TweetsPage = () => {
   const [cards, setCards] = useState([]);
-  
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -61,21 +56,21 @@ const TweetsPage = () => {
     },
     [followedCards, selectedOption]
   );
-const getAll = async()=> {
-  try {
-    const data = await getTotalUsers();
-    setTotalCards(data)
-    return 
-  } catch (error) {
-    console.log(error)
-  }
-}
+  const getAll = async () => {
+    try {
+      const data = await getTotalUsers();
+      setTotalCards(data);
+      return;
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     const fetchTweets = async () => {
       try {
         setIsLoading(true);
-    getAll();
-        
+        getAll();
+
         const totalPages = Math.ceil(totalCards.length / limit);
         if (selectedOption !== OPTIONS.SHOW_ALL) {
           handleOptionSelect(totalCards);
@@ -83,8 +78,8 @@ const getAll = async()=> {
         } else {
           const result = await getUsers(page);
           setCards((prevState) =>
-          page === 1 ? result : [...prevState, ...result]
-        );
+            page === 1 ? result : [...prevState, ...result]
+          );
           setShowButton(true);
           if (result.length <= limit && page === totalPages) {
             setShowButton(false);
@@ -108,10 +103,8 @@ const getAll = async()=> {
     setSelectedOption(option);
   }, []);
 
-
-
   useEffect(() => {
-    if ( cards.length > 3 && page !== 1) {
+    if (cards.length > 3 && page !== 1) {
       onSmoothScroll();
     }
   }, [cards, page]);
@@ -132,10 +125,7 @@ const getAll = async()=> {
       <TweetsBox>
         {isLoading && !showButton && <Loader />}
         {error && <p>...error</p>}
-        {cards.length > 0 && (
-          <TweetsList 
-          cards={cards} />
-        )}
+        {cards.length > 0 && <TweetsList cards={cards} />}
         {showButton && (
           <Button
             disabled={isLoading}
