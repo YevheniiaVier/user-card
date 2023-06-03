@@ -100,16 +100,16 @@ const TweetsPage = () => {
 
   const handleUpdate = (updatedCard) => {
     console.log('onUpdate', cards)
-    setCards((prevState) =>
-    prevState.map((card) => (card.id === updatedCard.id ? updatedCard : card))
-    );
+    // setCards((prevState) =>
+    // prevState.map((card) => (card.id === updatedCard.id ? updatedCard : card))
+    // );
   }
 
-  useEffect(() => {
-    if ( cards.length > 3 && page !== 1) {
-      onSmoothScroll();
-    }
-  }, [cards, page]);
+  // useEffect(() => {
+  //   if ( cards.length > 3 && page !== 1) {
+  //     onSmoothScroll();
+  //   }
+  // }, [cards, page]);
 
   const loadMore = useCallback(() => {
     setPage((prevState) => prevState + 1);
@@ -147,13 +147,13 @@ const TweetsPage = () => {
   );
 };
 
-function onSmoothScroll() {
-  const { height: cardHeight } = document
-    .querySelector("#gallery")
-    .firstElementChild.getBoundingClientRect();
-  window.scrollBy({
-    top: cardHeight * 1,
-    behavior: "smooth",
-  });
-}
+// function onSmoothScroll() {
+//   const { height: cardHeight } = document
+//     .querySelector("#gallery")
+//     .firstElementChild.getBoundingClientRect();
+//   window.scrollBy({
+//     top: cardHeight * 1,
+//     behavior: "smooth",
+//   });
+// }
 export default TweetsPage;
