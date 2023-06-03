@@ -25,6 +25,10 @@ export const Avatar = styled.img.attrs((props) => ({
   width: 100%;
   height: auto;
   border-radius: 50%;
+  box-shadow: 0px 4.39163px 4.39163px rgba(0, 0, 0, 0.06),
+    inset 0px -2.19582px 4.39163px #ae7be3,
+    inset 0px 4.39163px 3.29372px #fbf8ff;
+    object-fit: contain;
 `;
 
 export const Info = styled.p`
@@ -47,20 +51,18 @@ export const AvatarWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 80px;
-  height: 80px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   border: 8px solid #ebd8ff;
-  /* box-shadow: 0px 4.39163px 4.39163px rgba(0, 0, 0, 0.06),
-    inset 0px -2.19582px 4.39163px #ae7be3,
-    inset 0px 4.39163px 3.29372px #fbf8ff; */
   box-shadow: 0px 0px 0px 4px rgba(0, 0, 0, 0.06), inset 0px 0px 0px 4px #ae7be3,
     inset 0px 4px 3px rgba(0, 0, 0, 0.06), inset 0px -2px 4px #ae7be3;
+  overflow: hidden;
   position: absolute;
   bottom: -40px;
   left: 50%;
   transform: translateX(-50%);
-  box-sizing: border-box;
+  box-sizing: content-box;
 `;
 
 export const BackgroundWrapper = styled.div`

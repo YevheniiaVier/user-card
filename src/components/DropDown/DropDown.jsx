@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   DropdownButton,
   DropdownContainer,
@@ -26,23 +26,46 @@ export const Dropdown = ({ onOptionSelect }) => {
     onOptionSelect(option);
   };
 
+  const handleClickOutside = useCallback((event) => {
+    const dropdownContainer = document.getElementById("dropdown-container");
+    if (dropdownContainer && !dropdownContainer.contains(event.target)) {
+      setIsOpen(false);
+    }
+  }, []);
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      setIsOpen(false);
+    }
+  };
+  useEffect(() => {
+    if (isOpen) {
+      window.addEventListener("click", handleClickOutside);
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleClickOutside, isOpen]);
+
   return (
-    <DropdownContainer>
+    <DropdownContainer id="dropdown-container">
       <DropdownButton onClick={toggleDropdown}>{selectedOption}</DropdownButton>
       <DropdownContent isOpen={isOpen}>
         {selectedOption !== OPTIONS.SHOW_ALL && (
           <DropdownOption onClick={() => handleOptionSelect("Show All")}>
-            Show All
+            {OPTIONS.SHOW_ALL}
           </DropdownOption>
         )}
         {selectedOption !== OPTIONS.FOLLOW && (
           <DropdownOption onClick={() => handleOptionSelect("Follow")}>
-            Follow
+            {OPTIONS.FOLLOW}
           </DropdownOption>
         )}
         {selectedOption !== OPTIONS.FOLLOWING && (
           <DropdownOption onClick={() => handleOptionSelect("Following")}>
-            Following
+            {OPTIONS.FOLLOWING}
           </DropdownOption>
         )}
       </DropdownContent>

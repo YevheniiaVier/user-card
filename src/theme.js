@@ -10,6 +10,8 @@ export const theme = {
     darkGrey: '#A9A9A9',
     accent: '#5CD3A8',
     accentDark: '#33CC99',
+    headerAccent: "#0cf",
+    headerAccentDark: "rgb(8, 157, 194)"
   },
   space: [0, 2, 4, 6, 8, 16, 24, 64, 128, 256],
   fontSizes: {

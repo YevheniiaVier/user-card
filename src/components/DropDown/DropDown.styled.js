@@ -8,14 +8,15 @@ export const DropdownContainer = styled.div`
 export const DropdownButton = styled.button`
 width: 120px;
 align-items: center;
-  appearance: none;
+
   background-image: radial-gradient(
     100% 100% at 100% 0,
-    #0cf 0,
-    rgb(8, 157, 194) 100%
+    ${(p) => p.theme.colors.headerAccent} 0,
+    ${(p) => p.theme.colors.headerAccentDark} 100%
   );
-  border: 0;
-  border-radius: 20px;
+  border: none;
+  outline: none;
+  /* border-radius: 20px; */
   box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px;
   box-sizing: border-box;
   color: ${(p) => p.theme.colors.primary};
@@ -43,7 +44,7 @@ align-items: center;
   &:hover {
     color: ${(p) => p.theme.colors.white};
     box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,
-      rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgb(8, 157, 194) 0 -3px 0 inset;
+      rgba(45, 35, 66, 0.3) 0 7px 13px -3px, ${(p) => p.theme.colors.headerAccentDark} 0 -3px 0 inset;
   }
   
 `;
@@ -55,7 +56,12 @@ export const DropdownContent = styled.ul`
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #33CC99;
+  background-color: ${(p) => p.theme.colors.headerAccent};
+  background-image: radial-gradient(
+    100% 100% at 100% 0,
+    ${(p) => p.theme.colors.headerAccent} 0,
+    ${(p) => p.theme.colors.headerAccentDark} 100%
+  );
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
@@ -69,7 +75,7 @@ align-items: center;
   padding: 8px;
   transition: all 200ms 100ms;
   &:hover {
-    background-color: #EBD8FF;
+    background-color: ${(p) => p.theme.colors.accent};
   }
 `;
 export const SelectedOption = styled.div`
@@ -78,8 +84,8 @@ export const SelectedOption = styled.div`
   display: inline-flex;
   background-image: radial-gradient(
     100% 100% at 100% 0,
-    #0cf 0,
-    rgb(8, 157, 194) 100%
+    ${(p) => p.theme.colors.headerAccent} 0,
+    ${(p) => p.theme.colors.headerAccentDark} 100%
   );
   border: 0;
   border-radius: 20px;
