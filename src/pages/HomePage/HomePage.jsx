@@ -1,11 +1,10 @@
-import {Title } from './HomePage.styled';
+import {Title, Box, WelcomeMessage } from './HomePage.styled';
 
 const HomePage = () => {
   return (
-    // <Box>
-      <Title>Home page</Title>
- 
-    // </Box>
+    <Box>
+    <WelcomeMessage>Welcome to HomePage! Go for it!</WelcomeMessage>
+  </Box>
   );
 };
 

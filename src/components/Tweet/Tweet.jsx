@@ -12,40 +12,51 @@ import {
   BottomSection,
   Divider,
 } from "./Tweet.styled";
+
 import defaultUser from "../../images/defaultUser.png";
 import Button from "../Button/Button";
 import { getUser, updateUser } from "../../services/tweets-api";
+import { useContext } from "react";
+import { FollowedContext } from "../../FollowedContext";
 
 const Tweet = ({ card, onUpdate }) => {
   const { id, user, tweets, avatar, followers } = card;
+  const { followedCards, setFollowedCards } = useContext(FollowedContext);
 
-  const [isFollowed, setIsFollowed] = useState(() => JSON.parse(window.localStorage.getItem(`followed_${id}`)) ?? false);
+  const [isFollowed, setIsFollowed] = useState(
+    () => followedCards.includes(id)
+  );
+
+  // useEffect(() => {
+  //   setIsFollowed(followedCards.includes(id));
+  // }, [followedCards, id]);
+
   const [followersCount, setFollowersCount] = useState(card.followers);
   const [error, setError] = useState(null);
 
   const formattedTweets = tweets.toLocaleString("en-US");
   const formattedFollowers = followers.toLocaleString("en-US");
 
-  // useEffect(() => {
-  //   window.localStorage.setItem('contacts', JSON.stringify(contacts));
-  // }, [card]);
-  
+
+
   const toggleFollowed = async () => {
     setIsFollowed((prevState) => !prevState);
-    const updatedFollowersCount = isFollowed ? followersCount - 1 : followersCount + 1;
+    const updatedFollowersCount = isFollowed
+      ? followersCount - 1
+      : followersCount + 1;
     setFollowersCount(updatedFollowersCount);
     await updateCard(updatedFollowersCount);
-    const updatedCard = await getUser(id)
+    const updatedCard = await getUser(id);
     onUpdate(updatedCard);
-    if (isFollowed) {
-      localStorage.removeItem(`followed_${id}`);
-    } else {
-      localStorage.setItem(`followed_${id}`, true);
-    }
+
+    const updatedFollowedCards = isFollowed
+    ? followedCards.filter((cardId) => cardId !== id)
+    : [...followedCards, id];
+  setFollowedCards(updatedFollowedCards);
+  localStorage.setItem("followedCards", JSON.stringify(updatedFollowedCards));
+
+   
   };
-
-
-
 
   const updateCard = async (updatedFollowersCount) => {
     try {

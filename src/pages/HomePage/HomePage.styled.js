@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 
 export const Box = styled.div`
-  padding-top: 100px;
-
+  min-height: 300px;
   display: flex;
-  flex-direction: column;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
 `;
+
 export const Title = styled.h2`
   color: "green";
   font-size: 25px;
@@ -15,4 +17,11 @@ export const Title = styled.h2`
   display: flex;
   margin: 0 auto;
   margin-bottom: 5px;
+`;
+
+export const WelcomeMessage = styled.p`
+  color: ${p => p.theme.colors.secondary};
+  font-weight: bold;
+  font-size: 50px;
+  text-align: center;
 `;

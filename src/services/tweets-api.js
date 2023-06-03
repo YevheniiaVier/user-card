@@ -4,10 +4,10 @@ const instance = axios.create({
   baseURL: "https://63ea2fca811db3d7ef08adf5.mockapi.io/users",
 });
 
-export const getTotalCount = async () => {
+export const getTotalUsers = async () => {
   try {
     const { data } = await instance.get(`/`);
-    return data.length;
+    return data;
   } catch (error) {
     console.error("Error while fetching users:", error);
     throw error;
