@@ -13,6 +13,7 @@ import Button from "../../components/Button/Button";
 import { CircleLoader } from "../../components/Loader/Loader";
 import { TfiControlBackward } from "react-icons/tfi";
 import { Dropdown } from "../../components/DropDown/DropDown";
+import { ErrorMessage } from '../../components/ErrorMessage/ErrorMessage';
 
 import { OPTIONS } from "../../components/DropDown/DropDown";
 const TweetsPage = () => {
@@ -35,38 +36,12 @@ const TweetsPage = () => {
 
   const limit = searchParams.get("limit") || 3;
 
-  // const handleOptionSelect = useCallback(
-  //   async (totalUsers) => {
-  //     let cardsList = [];
-  //     if (selectedOption === OPTIONS.FOLLOW) {
-  //       cardsList = totalUsers.filter(
-  //         (card) => !followedCards.includes(card.id)
-  //       );
-  //     } else if (selectedOption === OPTIONS.FOLLOWING) {
-  //       cardsList = totalUsers.filter((card) =>
-  //         followedCards.includes(card.id)
-  //       );
-  //     } 
-  //     setCards(cardsList);
-  //     setShowButton(false);
-  //     window.scrollTo(0, 0);
-  //   },
-  //   [followedCards, selectedOption]
-  // );
-  // // const getAll = async () => {
-  // //   try {
-  // //     const data = await getTotalUsers();
-  // //     setTotalCards(data);
-  // //     return;
-  // //   } catch (error) {
-  // //     console.log(error);
-  // //   }
-  // // };
+
   useEffect(() => {
     const fetchTweets = async () => {
       try {
         setIsLoading(true);
-        // getAll();
+      
         const data = await getTotalUsers();
         const totalPages = Math.ceil(data.length / limit);
  
@@ -98,6 +73,7 @@ const TweetsPage = () => {
               `We're sorry, but you've reached the end of  results.`
             );
           } else {
+          
             setShowButton(true);
           }
         }
@@ -135,9 +111,9 @@ const TweetsPage = () => {
 
       <TweetsBox>
         {isLoading && !showButton && <Loader />}
-        {error && <p>...error</p>}
-        {!error && cards.length > 0 && <TweetsList cards={cards} />}
-        {showButton && (
+        {error && <ErrorMessage message={error}/>}
+        {!error && !isLoading && cards.length > 0 && <TweetsList cards={cards} />}
+        {showButton && !error && (
           <Button
             disabled={isLoading}
             type="button"
