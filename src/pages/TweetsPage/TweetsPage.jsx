@@ -2,11 +2,11 @@ import { useState, useEffect, useCallback, useContext } from "react";
 import { getTotalUsers, getUsers } from "../../services/tweets-api";
 import { CgMoreO } from "react-icons/cg";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
-import { FollowedContext } from "../../FollowedContext";
 
 import { Loader } from "../../components/Loader/Loader";
 
 import { GoBackBtn, Nav, Section, TweetsBox } from "./TweetsPage.styled";
+import { getFollowedCards } from '../../helpers/getFollowedCards';
 
 import TweetsList from "../../components/TweetsList/TweetsList";
 import Button from "../../components/Button/Button";
@@ -21,16 +21,18 @@ const OPTIONS = {
 
 const TweetsPage = () => {
   const [cards, setCards] = useState([]);
-  const { followedCards } = useContext(FollowedContext);
+  
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [selectedOption, setSelectedOption] = useState(OPTIONS.SHOW_ALL);
+  const [totalCards, setTotalCards] = useState(0);
 
   const [showButton, setShowButton] = useState(false);
   const [searchParams] = useSearchParams();
   const [emptyResults, setEmptyResults] = useState("");
+  const followedCards = getFollowedCards();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -41,6 +43,7 @@ const TweetsPage = () => {
 
   const handleOptionSelect = useCallback(
     async (totalUsers) => {
+      console.log('followedCards', followedCards)
       // setCards([]);
       let cardsList = [];
       if (selectedOption === OPTIONS.FOLLOW) {
@@ -52,7 +55,7 @@ const TweetsPage = () => {
           followedCards.includes(card.id)
         );
       } else {
-        setPage(1);
+        // setPage(1);
       }
       setCards(cardsList);
       setShowButton(false);
@@ -60,16 +63,25 @@ const TweetsPage = () => {
     },
     [followedCards, selectedOption]
   );
-
+const getAll = async()=> {
+  try {
+    const data = await getTotalUsers();
+    setTotalCards(data)
+    return 
+  } catch (error) {
+    console.log(error)
+  }
+}
   useEffect(() => {
     const fetchTweets = async () => {
       try {
         setIsLoading(true);
-        const data = await getTotalUsers();
-        const totalPages = Math.ceil(data.length / limit);
+    getAll();
+        
+        const totalPages = Math.ceil(totalCards.length / limit);
         if (selectedOption !== OPTIONS.SHOW_ALL) {
-          handleOptionSelect(data);
-          setPage(1);
+          handleOptionSelect(totalCards);
+          // setPage(1);
         } else {
           const result = await getUsers(page);
           setCards((prevState) =>
@@ -92,7 +104,7 @@ const TweetsPage = () => {
       }
     };
     fetchTweets();
-  }, [handleOptionSelect, limit, page, selectedOption]);
+  }, [limit, page]);
 
   const getOption = useCallback((option) => {
     setSelectedOption(option);
@@ -128,7 +140,9 @@ const TweetsPage = () => {
         {isLoading && !showButton && <Loader />}
         {error && <p>...error</p>}
         {cards.length > 0 && (
-          <TweetsList onFollowersCountUpdate={handleUpdate} cards={cards} />
+          <TweetsList 
+          // onFollowersCountUpdate={handleUpdate} 
+          cards={cards} />
         )}
         {showButton && (
           <Button
