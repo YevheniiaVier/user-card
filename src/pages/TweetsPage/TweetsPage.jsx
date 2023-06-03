@@ -43,8 +43,6 @@ const TweetsPage = () => {
 
   const handleOptionSelect = useCallback(
     async (totalUsers) => {
-      console.log('followedCards', followedCards)
-      // setCards([]);
       let cardsList = [];
       if (selectedOption === OPTIONS.FOLLOW) {
         cardsList = totalUsers.filter(
@@ -81,7 +79,7 @@ const getAll = async()=> {
         const totalPages = Math.ceil(totalCards.length / limit);
         if (selectedOption !== OPTIONS.SHOW_ALL) {
           handleOptionSelect(totalCards);
-          // setPage(1);
+          setPage(1);
         } else {
           const result = await getUsers(page);
           setCards((prevState) =>
@@ -104,24 +102,19 @@ const getAll = async()=> {
       }
     };
     fetchTweets();
-  }, [limit, page]);
+  }, [limit, page, selectedOption]);
 
   const getOption = useCallback((option) => {
     setSelectedOption(option);
   }, []);
 
-  const handleUpdate = (updatedCard) => {
-    console.log('onUpdate', cards)
-    // setCards((prevState) =>
-    // prevState.map((card) => (card.id === updatedCard.id ? updatedCard : card))
-    // );
-  }
 
-  // useEffect(() => {
-  //   if ( cards.length > 3 && page !== 1) {
-  //     onSmoothScroll();
-  //   }
-  // }, [cards, page]);
+
+  useEffect(() => {
+    if ( cards.length > 3 && page !== 1) {
+      onSmoothScroll();
+    }
+  }, [cards, page]);
 
   const loadMore = useCallback(() => {
     setPage((prevState) => prevState + 1);
@@ -141,7 +134,6 @@ const getAll = async()=> {
         {error && <p>...error</p>}
         {cards.length > 0 && (
           <TweetsList 
-          // onFollowersCountUpdate={handleUpdate} 
           cards={cards} />
         )}
         {showButton && (
@@ -161,13 +153,13 @@ const getAll = async()=> {
   );
 };
 
-// function onSmoothScroll() {
-//   const { height: cardHeight } = document
-//     .querySelector("#gallery")
-//     .firstElementChild.getBoundingClientRect();
-//   window.scrollBy({
-//     top: cardHeight * 1,
-//     behavior: "smooth",
-//   });
-// }
+function onSmoothScroll() {
+  const { height: cardHeight } = document
+    .querySelector("#gallery")
+    .firstElementChild.getBoundingClientRect();
+  window.scrollBy({
+    top: cardHeight * 1,
+    behavior: "smooth",
+  });
+}
 export default TweetsPage;
