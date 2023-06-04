@@ -44,8 +44,6 @@ const TweetsPage = () => {
 
   useEffect(() => {
     const fetchTweets = async () => {
-      console.log("first", Date.now());
-      console.log("page", page);
       setEmptyResults("");
       try {
         setIsLoading(true);
