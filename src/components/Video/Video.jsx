@@ -26,7 +26,7 @@ const Video = () => {
         ref={videoRef}
         className="video-js vjs-default-skin"
         controls
-        autoPlay
+        // autoPlay
         width="640"
         height="264"
         data-setup='{ "techOrder": ["youtube"], "sources": [{ "type": "video/youtube", "src": "https://www.youtube.com/watch?v=P73posqEc84"}], "youtube": { "customVars": { "wmode": "transparent" } } }'
