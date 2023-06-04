@@ -11,7 +11,14 @@ export const theme = {
     accent: '#5CD3A8',
     accentDark: '#33CC99',
     headerAccent: "#0cf",
-    headerAccentDark: "rgb(8, 157, 194)"
+    headerAccentDark: "rgb(8, 157, 194)",
+    shadowDark: "#ae7be3",
+    shadowLight: "#fbf8ff",
+    cardBackgroundLight: "#5736a3",
+    cardBackgroundMiddle: "#4b2a99",
+    cardBackgroundDark: "#471ca9"
+
+
   },
   space: [0, 2, 4, 6, 8, 16, 24, 64, 128, 256],
   fontSizes: {

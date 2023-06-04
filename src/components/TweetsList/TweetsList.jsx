@@ -3,13 +3,15 @@ import PropTypes from "prop-types";
 import Tweet from "../Tweet/Tweet";
 import { List } from "./TweetsList.styled";
 
-const TweetsList = ({ cards, onFollowersCountUpdate }) => {
+const TweetsList = ({ cards }) => {
   return (
-    <List id="gallery">
-      {cards.map((card) => (
-        <Tweet onUpdate={onFollowersCountUpdate} card={card} key={card.id} />
-      ))}
-    </List>
+    <>
+      <List id="gallery">
+        {cards.map((card) => (
+          <Tweet card={card} key={card.id} />
+        ))}
+      </List>
+    </>
   );
 };
 
@@ -18,7 +20,7 @@ TweetsList.defaultProps = {
 };
 
 TweetsList.propTypes = {
-  tweets: PropTypes.array.isRequired,
+  tweets: PropTypes.array,
 };
 
 export default TweetsList;

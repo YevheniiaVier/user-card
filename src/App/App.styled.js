@@ -5,6 +5,7 @@ export const Main = styled.main`
   margin: 0 auto;
   max-width: 1200px;
   display: flex;
+  justify-content: center;
 `;
 
 export const Header = styled.header`

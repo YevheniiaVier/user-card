@@ -42,13 +42,15 @@ const Tweet = ({ card }) => {
     const updatedFollowersCount = isFollowed
       ? followersCount - 1
       : followersCount + 1;
-    setFollowersCount(updatedFollowersCount);
     await updateCard(updatedFollowersCount);
-    const followedCards = JSON.parse(localStorage.getItem("followedCards")) || [];
+
+    const followedCards = JSON.parse(localStorage.getItem("followedCards")) ?? [];
     const updatedFollowedCards = isFollowed
       ? followedCards.filter((cardId) => cardId !== id)
       : [...followedCards, id];
     localStorage.setItem("followedCards", JSON.stringify(updatedFollowedCards));
+
+    setFollowersCount(updatedFollowersCount);
   };
 
   const updateCard = async (updatedFollowersCount) => {

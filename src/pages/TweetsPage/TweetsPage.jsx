@@ -3,18 +3,24 @@ import { getTotalUsers, getUsers } from "../../services/tweets-api";
 import { CgMoreO } from "react-icons/cg";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 
-import { Loader } from "../../components/Loader/Loader";
 
-import { GoBackBtn, Nav, Section, TweetsBox } from "./TweetsPage.styled";
+import {
+  GoBackBtn,
+  Nav,
+  Section,
+  TweetsBox,
+  Message,
+} from "./TweetsPage.styled";
 import { getFollowedCards } from "../../helpers/getFollowedCards";
+import TweetCardSkeleton from "../../components/Skeleton/TweetCardSkeleton/TweetCardSkeleton";
 
 import TweetsList from "../../components/TweetsList/TweetsList";
 import Button from "../../components/Button/Button";
 import { CircleLoader } from "../../components/Loader/Loader";
 import { TfiControlBackward } from "react-icons/tfi";
 import { Dropdown } from "../../components/DropDown/DropDown";
-import { ErrorMessage } from '../../components/ErrorMessage/ErrorMessage';
-
+import { ErrorMessage } from "../../components/ErrorMessage/ErrorMessage";
+import { List } from '../../components/TweetsList/TweetsList.styled';
 import { OPTIONS } from "../../components/DropDown/DropDown";
 const TweetsPage = () => {
   const [cards, setCards] = useState([]);
@@ -27,7 +33,6 @@ const TweetsPage = () => {
   const [showButton, setShowButton] = useState(false);
   const [searchParams] = useSearchParams();
   const [emptyResults, setEmptyResults] = useState("");
- 
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -36,32 +41,15 @@ const TweetsPage = () => {
 
   const limit = searchParams.get("limit") || 3;
 
-
   useEffect(() => {
     const fetchTweets = async () => {
       try {
         setIsLoading(true);
-      
+
         const data = await getTotalUsers();
         const totalPages = Math.ceil(data.length / limit);
- 
-        if (selectedOption !== OPTIONS.SHOW_ALL) {
-          let cardsList = [];
-          const followedCards = getFollowedCards();
-          if (selectedOption === OPTIONS.FOLLOW) {
-            cardsList = data.filter(
-              (card) => !followedCards.includes(card.id)
-            );
-          } else if (selectedOption === OPTIONS.FOLLOWING) {
-            cardsList = data.filter((card) =>
-              followedCards.includes(card.id)
-            );
-          } 
-          setCards(cardsList);
-          setShowButton(false);
-          window.scrollTo(0, 0);
-          setPage(1);
-        } else {
+
+        if (selectedOption === OPTIONS.SHOW_ALL) {
           const result = await getUsers(page);
           setCards((prevState) =>
             page === 1 ? result : [...prevState, ...result]
@@ -69,14 +57,25 @@ const TweetsPage = () => {
           setShowButton(true);
           if (result.length <= limit && page === totalPages) {
             setShowButton(false);
-            setEmptyResults(
-              `We're sorry, but you've reached the end of  results.`
-            );
+            setEmptyResults(`That's all!`);
           } else {
-          
             setShowButton(true);
           }
+          return;
         }
+
+        let cardsList = [];
+        const followedCards = getFollowedCards();
+        if (selectedOption === OPTIONS.FOLLOW) {
+          cardsList = data.filter((card) => !followedCards.includes(card.id));
+        }
+        if (selectedOption === OPTIONS.FOLLOWING) {
+          cardsList = data.filter((card) => followedCards.includes(card.id));
+        }
+        setCards(cardsList);
+        setShowButton(false);
+        window.scrollTo(0, 0);
+        setPage(1);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -110,10 +109,10 @@ const TweetsPage = () => {
       </Nav>
 
       <TweetsBox>
-        {isLoading && !showButton && <Loader />}
-        {error && <ErrorMessage message={error}/>}
-        {!error && !isLoading && cards.length > 0 && <TweetsList cards={cards} />}
-        {showButton && !error && (
+        {isLoading && <List>{<TweetCardSkeleton count={3}/>}</List>}
+        {error && <ErrorMessage message={error} />}
+        {!error && cards.length > 0 && <TweetsList cards={cards} />}
+        {!error && showButton && (
           <Button
             disabled={isLoading}
             type="button"
@@ -124,7 +123,7 @@ const TweetsPage = () => {
             {isLoading && <CircleLoader />}
           </Button>
         )}
-        {!showButton && emptyResults && <p>{emptyResults}</p>}
+        {emptyResults && <Message>{emptyResults}</Message>}
       </TweetsBox>
     </Section>
   );
