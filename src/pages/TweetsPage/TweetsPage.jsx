@@ -44,6 +44,8 @@ const TweetsPage = () => {
 
   useEffect(() => {
     const fetchTweets = async () => {
+      console.log("first", Date.now());
+      console.log("page", page);
       setEmptyResults("");
       try {
         setIsLoading(true);
@@ -53,10 +55,7 @@ const TweetsPage = () => {
 
         if (selectedOption === OPTIONS.SHOW_ALL) {
           const result = await getUsers(page);
-          setCards((prevState) =>
-            page === 1 ? result : [...prevState, ...result]
-          );
-          setShowButton(true);
+          setCards((prevState) => [...prevState, ...result]);
           if (result.length <= limit && page === totalPages) {
             setShowButton(false);
             setEmptyResults(`That's all!`);
@@ -89,6 +88,7 @@ const TweetsPage = () => {
 
   const getOption = useCallback((option) => {
     setSelectedOption(option);
+    setCards([]);
   }, []);
 
   useEffect(() => {
@@ -111,9 +111,7 @@ const TweetsPage = () => {
       </Nav>
 
       <TweetsBox>
-        {isLoading && (
-          <List>{<TweetCardSkeleton count={6} />}</List>
-        )}
+        {isLoading && <List>{<TweetCardSkeleton count={6} />}</List>}
         {error && <ErrorMessage message={error} />}
         {!error && cards.length > 0 && <TweetsList cards={cards} />}
         {!error && showButton && (
