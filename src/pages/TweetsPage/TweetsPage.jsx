@@ -109,7 +109,7 @@ const TweetsPage = () => {
       </Nav>
 
       <TweetsBox>
-        {isLoading && page === 1  &&  <List>{<TweetCardSkeleton count={6} />}</List>}
+        {isLoading && page === 1  &&  <List>{<TweetCardSkeleton count={3} />}</List>}
         {error && <ErrorMessage message={error} />}
         {!error && cards.length > 0 && <TweetsList cards={cards} />}
         {!error && showButton && (
