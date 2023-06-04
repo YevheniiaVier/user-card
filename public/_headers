@@ -1,2 +1,2 @@
 /*
-  Permissions-Policy: geolocation=(), camera=(), microphone=(), interest-cohort=()
+Permissions-Policy: geolocation=(), camera=(), microphone=()
