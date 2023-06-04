@@ -11,15 +11,19 @@ const Video = () => {
     let player = null;
 
     const initializePlayer = () => {
-      player = videojs(
-        videoRef.current);
+      player = videojs(videoRef.current);
     };
 
     if (videoRef.current && !player) {
       initializePlayer();
     }
-  }, [videoRef]);
 
+
+  }, []);
+
+  if (videojs.time && videojs.time.createTimeRange) {
+    videojs.createTimeRange = videojs.time.createTimeRanges;
+  }
   return (
     <VideoContainer>
       <video
@@ -28,7 +32,7 @@ const Video = () => {
         controls
         width="640"
         height="264"
-        data-setup='{ "techOrder": ["youtube"], "sources": [{ "type": "video/youtube", "src": "https://www.youtube.com/watch?v=P73posqEc84"}], "youtube": { "customVars": { "wmode": "transparent" } } }'
+        data-setup='{ "techOrder": ["youtube"], "sources": [{ "type": "video/youtube", "src": "https://www.youtube.com/embed/P73posqEc84"}], "youtube": { "customVars": { "wmode": "transparent" } } }'
       ></video>
     </VideoContainer>
   );
