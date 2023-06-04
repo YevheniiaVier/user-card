@@ -112,7 +112,7 @@ const TweetsPage = () => {
 
       <TweetsBox>
         {isLoading && (
-          <List>{<TweetCardSkeleton count={3} />}</List>
+          <List>{<TweetCardSkeleton count={6} />}</List>
         )}
         {error && <ErrorMessage message={error} />}
         {!error && cards.length > 0 && <TweetsList cards={cards} />}
