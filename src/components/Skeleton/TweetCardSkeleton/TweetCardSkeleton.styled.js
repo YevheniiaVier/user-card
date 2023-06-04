@@ -38,7 +38,7 @@ position: relative;
 export const InfoSkeleton = styled(BaseSkeleton)`
   margin: 0;
   padding: 0;
-  /* height: 40px; */
+
 `;
 export const AvatarSkeleton = styled(BaseSkeleton)`
   width: 80px;

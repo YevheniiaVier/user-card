@@ -69,11 +69,11 @@ export const GoBackBtn = styled.button`
   }
   
 `;
-export const Message = styled.p`
-  display: block;
-text-align: center;
-  margin-top: 20px;
-  font-size: 20px;
-  font-weight: bold;
-  color: ${(p) => p.theme.colors.cardBackgroundMiddle};
+
+export const InfoImage = styled.img.attrs(p => ({
+  src: p.src,
+  alt: p.alt,
+}))`
+  width: 200px;
+  height: auto;
 `;

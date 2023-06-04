@@ -3,6 +3,8 @@ import styled from 'styled-components';
 export const Box = styled.div`
   min-height: 300px;
   display: flex;
+  flex-direction: column;
+  gap: 20px;
   padding: 20px;
   justify-content: center;
   align-items: center;

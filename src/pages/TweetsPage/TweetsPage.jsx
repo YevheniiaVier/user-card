@@ -9,7 +9,7 @@ import {
   Nav,
   Section,
   TweetsBox,
-  Message,
+  InfoImage,
 } from "./TweetsPage.styled";
 import { getFollowedCards } from "../../helpers/getFollowedCards";
 import TweetCardSkeleton from "../../components/Skeleton/TweetCardSkeleton/TweetCardSkeleton";
@@ -22,6 +22,8 @@ import { Dropdown } from "../../components/DropDown/DropDown";
 import { ErrorMessage } from "../../components/ErrorMessage/ErrorMessage";
 import { List } from '../../components/TweetsList/TweetsList.styled';
 import { OPTIONS } from "../../components/DropDown/DropDown";
+import ThatAllImage from '../../images/thatsAll.png'
+
 const TweetsPage = () => {
   const [cards, setCards] = useState([]);
 
@@ -123,7 +125,7 @@ const TweetsPage = () => {
             {isLoading && <CircleLoader />}
           </Button>
         )}
-        {emptyResults && <Message>{emptyResults}</Message>}
+        {emptyResults && <InfoImage src={ThatAllImage} alt="that's all folks"/>}
       </TweetsBox>
     </Section>
   );
