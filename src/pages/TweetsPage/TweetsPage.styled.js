@@ -16,6 +16,10 @@ export const Nav = styled.div`
   justify-content: center;
   align-items: center;
   margin-bottom: 20px;
+  
+  @media screen and (max-width: 767px) {
+    top: 65px;
+  }
 `;
 
 export const Section = styled.section`
@@ -24,6 +28,9 @@ export const Section = styled.section`
   justify-content: center;
   align-items: center;
   width: 100%;
+  @media screen and (max-width: 767px) {
+    padding-top: 20px;
+  }
 `;
 
 export const GoBackBtn = styled.button`
