@@ -3,7 +3,6 @@ import { getTotalUsers, getUsers } from "../../services/tweets-api";
 import { CgMoreO } from "react-icons/cg";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 
-
 import {
   GoBackBtn,
   Nav,
@@ -20,9 +19,9 @@ import { CircleLoader } from "../../components/Loader/Loader";
 import { TfiControlBackward } from "react-icons/tfi";
 import { Dropdown } from "../../components/DropDown/DropDown";
 import { ErrorMessage } from "../../components/ErrorMessage/ErrorMessage";
-import { List } from '../../components/TweetsList/TweetsList.styled';
+import { List } from "../../components/TweetsList/TweetsList.styled";
 import { OPTIONS } from "../../components/DropDown/DropDown";
-import ThatAllImage from '../../images/thatsAll.png'
+import ThatAllImage from "../../images/thatsAll.png";
 
 const TweetsPage = () => {
   const [cards, setCards] = useState([]);
@@ -45,6 +44,7 @@ const TweetsPage = () => {
 
   useEffect(() => {
     const fetchTweets = async () => {
+      setEmptyResults("");
       try {
         setIsLoading(true);
 
@@ -111,7 +111,9 @@ const TweetsPage = () => {
       </Nav>
 
       <TweetsBox>
-        {isLoading && <List>{<TweetCardSkeleton count={3}/>}</List>}
+        {isLoading && (
+          <List>{<TweetCardSkeleton count={3} />}</List>
+        )}
         {error && <ErrorMessage message={error} />}
         {!error && cards.length > 0 && <TweetsList cards={cards} />}
         {!error && showButton && (
@@ -125,7 +127,9 @@ const TweetsPage = () => {
             {isLoading && <CircleLoader />}
           </Button>
         )}
-        {emptyResults && <InfoImage src={ThatAllImage} alt="that's all folks"/>}
+        {emptyResults && (
+          <InfoImage src={ThatAllImage} alt="that's all folks" />
+        )}
       </TweetsBox>
     </Section>
   );
